@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  MVVMC
+
+  Created by Dmitry Kh on 30.08.22.
+  
+*/
+
+"config_data_mismatch" = "The expected properties doesn't match to the config plist";
+"config_invalid_path" = "Couldn't read the file by path";
+"config_file_not_found" = "The configuration file was not found in the application bundle";
