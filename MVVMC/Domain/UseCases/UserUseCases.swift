@@ -10,6 +10,7 @@ import Combine
 
 protocol UserUseCasesProtocol {
   func currentUser() -> AnyPublisher<UserProfileEntity, Error>
+  func updateUser(profile: UserProfileEntity) -> AnyPublisher<UserProfileEntity, Error>
   func removeUser(_ profile: UserProfileEntity) -> AnyPublisher<Bool, Error>
 }
 
@@ -21,6 +22,10 @@ final class UserUseCases {
 }
 
 extension UserUseCases: UserUseCasesProtocol {
+  func updateUser(profile: UserProfileEntity) -> AnyPublisher<UserProfileEntity, Error> {
+    repository.updateUser(profile)
+  }
+  
   func currentUser() -> AnyPublisher<UserProfileEntity, Error> {
     repository.fetchCurrentUser()
   }

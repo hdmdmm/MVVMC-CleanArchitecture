@@ -22,9 +22,9 @@ final class CoreDataStorage {
     })
     return container
   }()
-
+  
   // MARK: - Core Data Saving support
-
+  
   func saveContext () {
     let context = persistentContainer.viewContext
     if context.hasChanges {
@@ -37,5 +37,9 @@ final class CoreDataStorage {
       }
     }
   }
-
+  
+  func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+    persistentContainer.performBackgroundTask(block)
+  }
+  
 }

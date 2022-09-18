@@ -8,8 +8,10 @@
 import Combine
 import SwiftUI
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
   @ObservedObject private(set) var viewModel: MainViewModel
+  private(set) var navigationCoordinator: NavigationCoordinator
+
   private var cancellables: Set<AnyCancellable> = []
 
   // MARK: UI components
@@ -20,8 +22,12 @@ class ViewController: UIViewController {
   }()
   //
 
-  init(_ viewModel: MainViewModel) {
+  init(
+    _ viewModel: MainViewModel,
+    _ coordinator: NavigationCoordinator
+  ) {
     self.viewModel = viewModel
+    self.navigationCoordinator = coordinator
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -44,6 +50,12 @@ class ViewController: UIViewController {
     viewModel.$status
       .sink { [weak self] status in
         self?.updateActivityIndicator(with: status)
+      }
+      .store(in: &cancellables)
+    
+    viewModel.$navigateTo
+      .sink {[navigationCoordinator] navigationType in
+        navigationCoordinator.next(arg: navigationType)
       }
       .store(in: &cancellables)
   }

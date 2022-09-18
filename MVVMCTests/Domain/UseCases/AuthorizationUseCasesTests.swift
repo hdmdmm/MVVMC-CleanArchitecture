@@ -122,7 +122,7 @@ class AuthorizationUseCasesTests: XCTestCase {
   }
   
 
-  class MockAuthGateway: AuthGatewayProtocol {
+  class MockAuthGateway: AuthenticationProtocol {
     enum MockErrors: Error {
       case mockedAuthCurrentUserError
       case mockedCreateUserError
@@ -153,6 +153,10 @@ class AuthorizationUseCasesTests: XCTestCase {
     func createUser(profile: UserProfileEntity, with credentials: UserCredentialEntity) -> AnyPublisher<UserProfileEntity, Error> {
       testCredentials = credentials
       return providesPublisher(with: MockErrors.mockedCreateUserError, profile)
+    }
+
+    func activateUserProtile(receivedCode: String) -> AnyPublisher<Bool, Error> {
+      return Just(true).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     // MARK: private API helper

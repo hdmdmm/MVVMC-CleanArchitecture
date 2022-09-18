@@ -27,5 +27,3 @@ struct UserCredentialEntity: Equatable {
     return lhs.userId.hashValue == rhs.userId.hashValue
   }
 }
-
-typealias Salt = Int

@@ -11,7 +11,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var container: AppDIContainer!
-  var coordinator: AppCoordinator?
   var window: UIWindow?
   
   func application(_ application: UIApplication,
@@ -50,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     CoreDataStorage.shared.saveContext()
   }
   
-
+  // MARK: private API helper
   private func createWindow(with rootViewController: UIViewController) {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = rootViewController
@@ -58,8 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   private func startRootCoordinator(on rootController: UINavigationController) {
-    coordinator = AppCoordinator(rootController, container: container)
-    coordinator?.start()
+    container.coordinator.rootViewController = rootController
+    container.coordinator.start()
   }
 }
 
