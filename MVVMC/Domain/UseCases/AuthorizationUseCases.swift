@@ -61,8 +61,7 @@ extension AuthorizationUseCases: AuthorizationUseCasesProtocol {
   }
   
   func createUser(_ user: UserProfileEntity, credentials: UserCredentialEntity) -> AnyPublisher<Bool, Error> {
-    // create user in the network -> receiving user from network and store into db
-    // read user from the repository -> fetching the user profile from db
+    // send request to backend and wait for confirmation code
     authentication.createUser(profile: user, with: credentials)
   }
 }

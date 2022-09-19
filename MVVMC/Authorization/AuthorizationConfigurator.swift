@@ -16,10 +16,10 @@ struct AuthorizationConfig: Decodable {
 }
 
 struct AuthorizationConfigurator: ConfiguratorProtocol {
-  let configurator: AuthorizationConfig
+  let model: AuthorizationConfig
   
   init(_ fileName: String = "AuthorizationConfigurator") throws {
-    configurator = try Self.load(fileName)
+    model = try Self.load(fileName)
   }
 }
 

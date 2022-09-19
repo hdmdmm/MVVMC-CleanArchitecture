@@ -24,12 +24,12 @@ extension ConfiguratorErrors: LocalizedError {
 }
 
 protocol ConfiguratorProtocol {
-  associatedtype ConfiguratorDataType: Decodable
-  var configurator: ConfiguratorDataType { get }
+  associatedtype ConfiguratorModelType: Decodable
+  var model: ConfiguratorModelType { get }
 }
 
 extension ConfiguratorProtocol {
-  static func load( _ fileName: String, _ bundle: Bundle = Bundle.main) throws -> ConfiguratorDataType {
+  static func load( _ fileName: String, _ bundle: Bundle = Bundle.main) throws -> ConfiguratorModelType {
     guard let url = bundle.url(forResource: fileName, withExtension: "plist")
     else {
       throw ConfiguratorErrors.configFileNotFound
@@ -40,7 +40,7 @@ extension ConfiguratorProtocol {
       throw ConfiguratorErrors.configInvalidPath
     }
 
-    guard let configurator = try? PropertyListDecoder().decode(ConfiguratorDataType.self, from: data)
+    guard let configurator = try? PropertyListDecoder().decode(ConfiguratorModelType.self, from: data)
     else {
       throw ConfiguratorErrors.configDataMismatch
     }

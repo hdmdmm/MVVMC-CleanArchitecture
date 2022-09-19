@@ -16,7 +16,7 @@ class AppConfiguratorTests: XCTestCase {
   
   func testPolygonApiKeyValue() throws {
     let configurator = try AppConfigurator()
-    XCTAssertFalse(configurator.config.polygonApiKey.isEmpty)
-    XCTAssertEqual(configurator.config.polygonApiKey.count, 32)
+    XCTAssertFalse(configurator.model.polygonApiKey.isEmpty)
+    XCTAssertEqual(configurator.model.polygonApiKey.count, 32)
   }  
 }

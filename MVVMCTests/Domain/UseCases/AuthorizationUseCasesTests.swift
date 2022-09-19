@@ -59,8 +59,8 @@ class AuthorizationUseCasesTests: XCTestCase {
     )
 
     let publisher = authUseCase.createUser(testUserProfile, credentials: testCredentials)
-    let createdUser = try awaitPublisher(publisher)
-    XCTAssertEqual(createdUser, testUserProfile)
+    let success = try awaitPublisher(publisher)
+    XCTAssertEqual(success, true)
   }
   
   func testCreateUserError_AuthGateway() throws {
@@ -73,13 +73,23 @@ class AuthorizationUseCasesTests: XCTestCase {
     catchUpAndCheckForError(publisher, expectedError: MockAuthGateway.MockErrors.mockedCreateUserError)
   }
 
+  func testCreateUserError_AuthGateway_error() throws {
+    let authUseCase = AuthorizationUseCases(
+      authRepository: MockAuthGateway(authorizedUser: testUserProfile, true),
+      userRepository: MockUserRepository(user: testUserProfile)
+    )
+
+    let publisher = authUseCase.confirmAuthorization(receivedCode: "code")
+    catchUpAndCheckForError(publisher, expectedError: MockAuthGateway.MockErrors.mockedActivateUserProfile)
+  }
+
   func testCreateUserError_UserRepository_storeUserError() throws {
     let authUseCase = AuthorizationUseCases(
       authRepository: MockAuthGateway(authorizedUser: testUserProfile),
       userRepository: MockUserRepository(user: testUserProfile, .mockedStoreUserError)
     )
 
-    let publisher = authUseCase.createUser(testUserProfile, credentials: testCredentials)
+    let publisher = authUseCase.confirmAuthorization(receivedCode: "code")
     catchUpAndCheckForError(publisher, expectedError: MockUserRepository.MockErrors.mockedStoreUserError)
   }
   
@@ -89,7 +99,7 @@ class AuthorizationUseCasesTests: XCTestCase {
       userRepository: MockUserRepository(user: testUserProfile, .mockedFetchCurrentUserError)
     )
   
-    let publisher = authUseCase.createUser(testUserProfile, credentials: testCredentials)
+    let publisher = authUseCase.confirmAuthorization(receivedCode: "code")
     catchUpAndCheckForError(publisher, expectedError: MockUserRepository.MockErrors.mockedFetchCurrentUserError)
   }
   
@@ -102,7 +112,7 @@ class AuthorizationUseCasesTests: XCTestCase {
       userRepository: mockUserRepository
     )
 
-    let publisher = authUseCase.createUser(testUserProfile, credentials: testCredentials)
+    let publisher = authUseCase.confirmAuthorization(receivedCode: "code")
     catchUpAndCheckForError(publisher, expectedError: AuthorizationUseCasesErrors.savingUserProfileWasNotSuccess)
   }
 
@@ -123,19 +133,20 @@ class AuthorizationUseCasesTests: XCTestCase {
   
 
   class MockAuthGateway: AuthenticationProtocol {
+    
     enum MockErrors: Error {
       case mockedAuthCurrentUserError
       case mockedCreateUserError
+      case mockedActivateUserProfile
     }
 
-    let mockedAuthorizedUser: UserProfileEntity
+    private(set) var mockedAuthorizedUser: UserProfileEntity
     let isReturnsErrorTest: Bool
     
     var testAuthoriseCurrentUser = false
     var testCreateUser = false
     
     var testCredentials: UserCredentialEntity?
-
 
     init(
       authorizedUser: UserProfileEntity,
@@ -144,27 +155,26 @@ class AuthorizationUseCasesTests: XCTestCase {
       mockedAuthorizedUser = authorizedUser
       isReturnsErrorTest = isReturnsError
     }
+    
+    func createUser(profile: UserProfileEntity, with credentials: UserCredentialEntity) -> AnyPublisher<Bool, Error> {
+      testCredentials = credentials
+      mockedAuthorizedUser = profile
+      return providesPublisher(true, MockErrors.mockedCreateUserError)
+    }
+  
+    func activateUserProtile(receivedCode: String) -> AnyPublisher<UserProfileEntity, Error> {
+      providesPublisher(mockedAuthorizedUser, MockErrors.mockedActivateUserProfile)
+    }
 
     func authorizeCurrentUser(with credentials: UserCredentialEntity) -> AnyPublisher<UserProfileEntity, Error> {
       testCredentials = credentials
-      return providesPublisher(with: MockErrors.mockedAuthCurrentUserError, mockedAuthorizedUser)
-    }
-    
-    func createUser(profile: UserProfileEntity, with credentials: UserCredentialEntity) -> AnyPublisher<UserProfileEntity, Error> {
-      testCredentials = credentials
-      return providesPublisher(with: MockErrors.mockedCreateUserError, profile)
+      return providesPublisher(mockedAuthorizedUser, MockErrors.mockedAuthCurrentUserError)
     }
 
-    func activateUserProtile(receivedCode: String) -> AnyPublisher<Bool, Error> {
-      return Just(true).setFailureType(to: Error.self).eraseToAnyPublisher()
-    }
-    
     // MARK: private API helper
-    private func providesPublisher(with error: MockErrors, _ user: UserProfileEntity) -> AnyPublisher<UserProfileEntity, Error> {
-      guard !isReturnsErrorTest else {
-        return Fail(error: error).eraseToAnyPublisher()
-      }
-      return Just(user).setFailureType(to: Error.self).eraseToAnyPublisher()
+    private func providesPublisher<T>(_ value: T, _ error: MockErrors) -> AnyPublisher<T, Error> {
+      guard !isReturnsErrorTest else { return Fail(error: error).eraseToAnyPublisher() }
+      return Just(value).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
   }
 

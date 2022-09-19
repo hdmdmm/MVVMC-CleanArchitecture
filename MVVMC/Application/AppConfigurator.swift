@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct AppConfiguratorData: Decodable {
+struct AppConfiguratorModel: Decodable {
   let polygonApiKey: String
   // add the config keys here and in the AppConfig.plist file
 }
 
 struct AppConfigurator: ConfiguratorProtocol {
-  private(set) var configurator: AppConfiguratorData
+  private(set) var model: AppConfiguratorModel
 
   init(_ fileName: String = "AppConfig") throws {
-    self.configurator = try Self.load(fileName)
+    self.model = try Self.load(fileName)
   }
 }
