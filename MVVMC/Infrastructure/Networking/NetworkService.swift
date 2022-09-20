@@ -16,31 +16,47 @@ public enum NetworkError: Error {
   case urlGeneration
 }
 
-public protocol NetworkServiceProtocol {}
+public protocol NetworkServiceProtocol {
+  func request(endpoint: Requestable) -> AnyPublisher<Data, NetworkError>
+}
 
-public struct DefaultNetworkService: NetworkServiceProtocol {
+public struct DefaultNetworkService {
   private let sessionManager: NetworkSessionManagerProtocol
-  init(sessionManager: NetworkSessionManagerProtocol = DefaultNetworkSessionManager()) {
+  private let networkConfig: NetworkConfigurable
+  init(
+    networkConfig: NetworkConfigurable,
+    sessionManager: NetworkSessionManagerProtocol = DefaultNetworkSessionManager()
+  ) {
+    self.networkConfig = networkConfig
     self.sessionManager = sessionManager
   }
 }
 
-public protocol NetworkSessionManagerProtocol {
-  func dataTask(request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), URLError>
-}
-
-public struct DefaultNetworkSessionManager: NetworkSessionManagerProtocol {
-  private let session: URLSession
-  
-  public init(configuration: URLSessionConfiguration) {
-    session = URLSession(configuration: configuration)
-  }
-  
-  public init(session: URLSession = URLSession.shared) {
-    self.session = session
-  }
-  
-  public func dataTask(request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
-    session.dataTaskPublisher(for: request).eraseToAnyPublisher()
+extension DefaultNetworkService: NetworkServiceProtocol {
+  public func request(endpoint: Requestable) -> AnyPublisher<Data, NetworkError> {
+    
+    do {
+      let urlRequest = try endpoint.urlRequest(with: networkConfig)
+      return sessionManager.dataTask(request: urlRequest)
+        .mapError { error -> NetworkError in
+          if error.code == .notConnectedToInternet {
+            return .notConnected
+          }
+          if error.code == .cancelled {
+            return .cancelled
+          }
+          if error.code == .badURL || error.code == .unsupportedURL {
+            return .urlGeneration
+          }
+          return .generic(error)
+        }
+        .map { (data: Data, response: URLResponse) in
+          return data
+        }
+        .eraseToAnyPublisher()
+    }
+    catch {
+      return Fail(error: NetworkError.urlGeneration).eraseToAnyPublisher()
+    }
   }
 }

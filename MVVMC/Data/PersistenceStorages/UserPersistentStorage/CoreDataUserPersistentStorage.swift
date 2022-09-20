@@ -13,5 +13,4 @@ struct CoreDataPersistentStorage: UserPersistentStorage {
   init(coreDataStorage: CoreDataStorage = CoreDataStorage.shared) {
     self.coreDataStorage = coreDataStorage
   }
-
 }

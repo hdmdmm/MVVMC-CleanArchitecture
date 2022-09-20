@@ -42,7 +42,7 @@ final class MainViewModel: ObservableObject {
     
     Publishers.CombineLatest(
       dependencies.userInteractorUseCases.currentUser().map { _ in true }.catch{_ in Just(false)},
-      dependencies.authorizationService.isAuthorized.catch{_ in Just(false)}
+      dependencies.authorizationService.isAuthorized.catch {_ in Just(false)}
     )
     .map { [dependencies] (isCurrentUser, isAuthorized) -> Any in
       guard isCurrentUser else {

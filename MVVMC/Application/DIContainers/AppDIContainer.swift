@@ -18,7 +18,7 @@ protocol AppDIDependencies: DIDepenciesProtocol {
 
 final class AppDIContainer {
   let config: AppConfigurator
-
+  
   lazy var authorizationService: AuthorizationServiceProtocol = {
     AuthorizationService(
       dataTransferService: makeAuthDataTransferService(),
@@ -52,17 +52,29 @@ final class AppDIContainer {
     )
     return MainViewModel(dependencies)
   }
+  
+  private lazy var networkService: NetworkServiceProtocol = {
+    let networkConfig = ApiDataNetworkConfig (
+      baseURL: config.baseURL,
+      headers: ["apiKey" : config.model.polygonApiKey]
+    )
+    return DefaultNetworkService(networkConfig: networkConfig)
+  }()
 
+  private func makeDataTransferService() -> DataTransferServiceProtocol {
+    return DefaultDataTransferService(networkService: networkService)
+  }
+  
+  private func makeUserRepository() -> UserRepositoryProtocol {
+    return UserRepository(dataTransferService: makeDataTransferService())
+  }
+  
   private func makeUserUseCases() -> UserUseCasesProtocol {
     UserUseCases(repository: makeUserRepository())
   }
 
-  private func makeUserRepository() -> UserRepositoryProtocol {
-    UserRepository()
-  }
-
   private func makeAuthDataTransferService() -> DataTransferServiceProtocol {
-    AuthDataTransferService()
+    return AuthDataTransferService(networkService: networkService)
   }
 }
 

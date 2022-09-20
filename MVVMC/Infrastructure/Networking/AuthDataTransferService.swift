@@ -11,7 +11,7 @@ import Combine
 struct AuthDataTransferService: DataTransferServiceProtocol {
   let networkService: NetworkServiceProtocol
 
-  init(networkService: NetworkServiceProtocol = DefaultNetworkService()) {
+  init(networkService: NetworkServiceProtocol) {
     self.networkService = networkService
   }
 

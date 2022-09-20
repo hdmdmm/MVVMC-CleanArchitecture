@@ -7,6 +7,4 @@
 
 import Foundation
 
-protocol UserPersistentStorage {
-  
-}
+protocol UserPersistentStorage {}

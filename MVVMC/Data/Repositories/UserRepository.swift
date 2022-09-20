@@ -13,7 +13,7 @@ final class UserRepository: UserRepositoryProtocol {
   private let userStorage: UserPersistentStorage
   
   init(
-    dataTransferService: DataTransferServiceProtocol = DefaultDataTransferService(),
+    dataTransferService: DataTransferServiceProtocol,
     userStorage: UserPersistentStorage = CoreDataPersistentStorage()
   ) {
     self.dataTransferService = dataTransferService
