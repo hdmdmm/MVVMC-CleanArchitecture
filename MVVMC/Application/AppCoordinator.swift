@@ -34,7 +34,9 @@ enum AppNavigationTypes: NavigationType {
 
   private func navigateToSignInSceneFlow(_ container: SignInSceneDIContainer) {}
   private func navigateToSignUpSceneFlow(_ container: SignUpSceneDIContainer) {}
-  private func navigateToMainSceneFlow(_ container: MainSceneDIContainer) {}
+  private func navigateToMainSceneFlow(_ container: MainSceneDIContainer) {
+    
+  }
 }
 
 final class AppCoordinator {

@@ -39,18 +39,18 @@ final class AppDIContainer {
   }
 
   private func makeMainViewController() -> UIViewController {
-    MainViewController(makeMainViewModel(), coordinator)
+    RootViewController(makeMainViewModel(), coordinator)
   }
 
-  private func makeMainViewModel() -> MainViewModel {
-    let dependencies = MainViewModelDependencies(
+  private func makeMainViewModel() -> RootViewModel {
+    let dependencies = RootViewModelDependencies(
       authorizationService: authorizationService,
       userInteractorUseCases: makeUserUseCases(),
       navigateToSignInSceneFlow: AppNavigationTypes.signInSceneFlow,
       navigateToSignUpSceneFlow: AppNavigationTypes.signUpSceneFlow,
       navigateToMainSceneFlow: AppNavigationTypes.mainSceneFlow
     )
-    return MainViewModel(dependencies)
+    return RootViewModel(dependencies)
   }
   
   private lazy var networkService: NetworkServiceProtocol = {
