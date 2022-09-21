@@ -28,12 +28,27 @@ public struct DefaultDataTransferService: DataTransferServiceProtocol {
   
   public func request<T:Decodable, E: ResponseRequestable>(to endpoint: E) -> AnyPublisher<T, DataTransferError> where E.Response == T {
     networkService.request(endpoint: endpoint)
-      .mapError { DataTransferError.networkFailure($0) }
       .tryMap { data -> T in
-        try endpoint.responseDecoder.decode(data) as T
+        do {
+          return try endpoint.responseDecoder.decode(data) as T
+        } catch {
+          throw DataTransferError.parsing(error)
+        }
       }
-      .mapError { DataTransferError.parsing($0) }
+      .mapError(transform(_:))
       .eraseToAnyPublisher()
+  }
+  
+  private func transform(_ error: Error) -> DataTransferError {
+    if let error = error as? NetworkError {
+      return DataTransferError.networkFailure(error)
+    }
+    
+    if let error = error as? DataTransferError {
+      return error
+    }
+    
+    return DataTransferError.generic(error)
   }
 }
 

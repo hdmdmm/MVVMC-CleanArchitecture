@@ -38,25 +38,42 @@ extension DefaultNetworkService: NetworkServiceProtocol {
     do {
       let urlRequest = try endpoint.urlRequest(with: networkConfig)
       return sessionManager.dataTask(request: urlRequest)
-        .mapError { error -> NetworkError in
-          if error.code == .notConnectedToInternet {
-            return .notConnected
-          }
-          if error.code == .cancelled {
-            return .cancelled
-          }
-          if error.code == .badURL || error.code == .unsupportedURL {
-            return .urlGeneration
-          }
-          return .generic(error)
-        }
-        .map { (data: Data, response: URLResponse) in
-          return data
-        }
+        .tryMap(transform(_:))
+        .mapError(transform(_:))
+        .map { $0.data }
         .eraseToAnyPublisher()
     }
     catch {
       return Fail(error: NetworkError.urlGeneration).eraseToAnyPublisher()
     }
+  }
+  
+  private func transform(_ error: Error) -> NetworkError {
+    if let error = error as? NetworkError {
+      return error
+    }
+    guard let error = error as? URLError else {
+      return .generic(error)
+    }
+    if error.code == .notConnectedToInternet {
+      return .notConnected
+    }
+    if error.code == .cancelled {
+      return .cancelled
+    }
+    if error.code == .badURL || error.code == .unsupportedURL {
+      return .urlGeneration
+    }
+    return .generic(error)
+  }
+  
+  private func transform(_ element: (data: Data, response: URLResponse)) throws -> (data: Data, response: URLResponse) {
+    guard
+      let statusCode = (element.response as? HTTPURLResponse)?.statusCode,
+      statusCode != 200
+    else {
+      return element
+    }
+    throw NetworkError.error(statusCode: statusCode, data: element.data)
   }
 }
