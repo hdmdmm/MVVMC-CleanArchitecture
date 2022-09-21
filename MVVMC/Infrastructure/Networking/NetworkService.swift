@@ -68,8 +68,10 @@ extension DefaultNetworkService: NetworkServiceProtocol {
   }
   
   private func transform(_ element: (data: Data, response: URLResponse)) throws -> (data: Data, response: URLResponse) {
-    guard let statusCode = (element.response as? HTTPURLResponse)?.statusCode,
-      !((200..<300) ~= statusCode) else {
+    guard
+      let statusCode = (element.response as? HTTPURLResponse)?.statusCode,
+      !((200..<300) ~= statusCode)
+    else {
       return element
     }
     throw NetworkError.error(statusCode: statusCode, data: element.data)
