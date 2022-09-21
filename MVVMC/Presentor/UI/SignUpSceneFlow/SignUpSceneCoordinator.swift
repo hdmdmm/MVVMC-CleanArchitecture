@@ -18,9 +18,9 @@ enum SignUpFlowNavigationTypes: NavigationType {
 final class SignUpSceneCoordinator {
   // important: weak referenced here due to strong referenced in UI hierarchy
   weak var rootViewController: UINavigationController?
-  private let container: SignInSceneDIContainer
+  private let container: SignUpSceneDIContainer
 
-  init ( container: SignInSceneDIContainer ) {
+  init ( container: SignUpSceneDIContainer ) {
     self.container = container
   }
 }
