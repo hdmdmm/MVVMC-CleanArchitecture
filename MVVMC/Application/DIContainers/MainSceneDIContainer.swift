@@ -6,9 +6,26 @@
 //
 
 import Foundation
+import UIKit
 
 protocol MainSceneDependencies: DIDepenciesProtocol {
 }
 
 final class MainSceneDIContainer: MainSceneDependencies {
+  
+  private func makeViewModel() -> MainViewModel {
+    MainViewModel()
+  }
+  
+  private func makeCoordinator() -> MainSceneCoordinator {
+    MainSceneCoordinator(container: self)
+  }
+  
+  private func makeViewController() -> MainViewController {
+    MainViewController( makeViewModel(), makeCoordinator() )
+  }
+
+  func rootViewController() -> UINavigationController {
+    UINavigationController(rootViewController: makeViewController() )
+  }
 }

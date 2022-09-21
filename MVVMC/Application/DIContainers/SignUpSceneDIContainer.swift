@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 protocol SignUpSceneDependencies: DIDepenciesProtocol {
 }
 
 final class SignUpSceneDIContainer: SignUpSceneDependencies {
+  func rootViewController() -> UINavigationController {
+    UINavigationController()
+  }
 }

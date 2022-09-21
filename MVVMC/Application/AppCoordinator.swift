@@ -25,17 +25,27 @@ enum AppNavigationTypes: NavigationType {
       // put the logs
       return
     }
+    let viewController: UIViewController
     switch self {
-    case .mainSceneFlow: navigateToMainSceneFlow(dependencies.makeMainSceneFlowDIContainer())
-    case .signUpSceneFlow: navigateToSignUpSceneFlow(dependencies.makeSignUpSceneFlowDIContainer())
-    case .signInSceneFlow: navigateToSignInSceneFlow(dependencies.makeSignInSceneFlowDIContainer())
+    case .mainSceneFlow:
+      viewController = navigateToMainSceneFlow(dependencies.makeMainSceneFlowDIContainer())
+    case .signUpSceneFlow:
+      viewController = navigateToSignUpSceneFlow(dependencies.makeSignUpSceneFlowDIContainer())
+    case .signInSceneFlow:
+      viewController = navigateToSignInSceneFlow(dependencies.makeSignInSceneFlowDIContainer())
     }
+    
+    rootViewController?.present(viewController, animated: true)
   }
 
-  private func navigateToSignInSceneFlow(_ container: SignInSceneDIContainer) {}
-  private func navigateToSignUpSceneFlow(_ container: SignUpSceneDIContainer) {}
-  private func navigateToMainSceneFlow(_ container: MainSceneDIContainer) {
-    
+  private func navigateToSignInSceneFlow(_ container: SignInSceneDIContainer) -> UIViewController  {
+    container.rootViewController()
+  }
+  private func navigateToSignUpSceneFlow(_ container: SignUpSceneDIContainer) -> UIViewController  {
+    container.rootViewController()
+  }
+  private func navigateToMainSceneFlow(_ container: MainSceneDIContainer) -> UIViewController {
+    container.rootViewController()
   }
 }
 

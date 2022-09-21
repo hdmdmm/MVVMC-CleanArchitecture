@@ -21,7 +21,14 @@ final class UserRepository: UserRepositoryProtocol {
   }
 
   func fetchCurrentUser() -> AnyPublisher<UserProfileEntity, Error> {
-    return Fail(error: NSError(domain: String(describing: self), code: -9001, userInfo: [NSLocalizedDescriptionKey: "The \(#function) under maintenance"])).eraseToAnyPublisher()
+    return Just( UserProfileEntity(
+      userId: UUID(),
+      name: "Ilon",
+      lastName: "Mask",
+      username: "imaskinnovations"
+    ))
+    .setFailureType(to: Error.self)
+    .eraseToAnyPublisher()
   }
   
   func storeUser(_ profile: UserProfileEntity) -> AnyPublisher<Bool, Error> {

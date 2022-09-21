@@ -42,7 +42,7 @@ final class AuthorizationService: AuthorizationServiceProtocol {
   ) {
     self.dataTransferService = dataTransferService
     security = securityQueries
-    isAuthorized = CurrentValueSubject(false)
+    isAuthorized = CurrentValueSubject(true)
   }
 }
 
