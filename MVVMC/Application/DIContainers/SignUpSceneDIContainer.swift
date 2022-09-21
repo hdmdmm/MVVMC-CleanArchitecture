@@ -12,7 +12,19 @@ protocol SignUpSceneDependencies: DIDepenciesProtocol {
 }
 
 final class SignUpSceneDIContainer: SignUpSceneDependencies {
+  private func makeViewModel() -> SignUpViewModel {
+    SignUpViewModel()
+  }
+  
+  private func makeCoordinator() -> SignUpSceneCoordinator {
+    SignUpSceneCoordinator(container: self)
+  }
+  
+  private func makeViewController() -> SignUpViewController {
+    SignUpViewController( makeViewModel(), makeCoordinator() )
+  }
+
   func rootViewController() -> UINavigationController {
-    UINavigationController()
+    UINavigationController(rootViewController: makeViewController() )
   }
 }

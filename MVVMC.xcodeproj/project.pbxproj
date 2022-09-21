@@ -28,7 +28,7 @@
 		B078DA5228DA26B50074138C /* MainSceneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5128DA26B50074138C /* MainSceneCoordinator.swift */; };
 		B078DA5428DAA6DC0074138C /* SignInSceneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5328DAA6DC0074138C /* SignInSceneCoordinator.swift */; };
 		B078DA5628DAA6FA0074138C /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5528DAA6FA0074138C /* SignInViewModel.swift */; };
-		B078DA5828DAA7200074138C /* SigninViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5728DAA7200074138C /* SigninViewController.swift */; };
+		B078DA5828DAA7200074138C /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5728DAA7200074138C /* SignInViewController.swift */; };
 		B078DA5A28DAA8F80074138C /* SignUpSceneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5928DAA8F80074138C /* SignUpSceneCoordinator.swift */; };
 		B078DA5C28DAAB210074138C /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5B28DAAB210074138C /* SignUpViewModel.swift */; };
 		B078DA5E28DAAB7F0074138C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B078DA5D28DAAB7F0074138C /* SignUpViewController.swift */; };
@@ -105,7 +105,7 @@
 		B078DA5128DA26B50074138C /* MainSceneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneCoordinator.swift; sourceTree = "<group>"; };
 		B078DA5328DAA6DC0074138C /* SignInSceneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSceneCoordinator.swift; sourceTree = "<group>"; };
 		B078DA5528DAA6FA0074138C /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		B078DA5728DAA7200074138C /* SigninViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewController.swift; sourceTree = "<group>"; };
+		B078DA5728DAA7200074138C /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		B078DA5928DAA8F80074138C /* SignUpSceneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpSceneCoordinator.swift; sourceTree = "<group>"; };
 		B078DA5B28DAAB210074138C /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		B078DA5D28DAAB7F0074138C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -474,7 +474,7 @@
 			children = (
 				B078DA5328DAA6DC0074138C /* SignInSceneCoordinator.swift */,
 				B078DA5528DAA6FA0074138C /* SignInViewModel.swift */,
-				B078DA5728DAA7200074138C /* SigninViewController.swift */,
+				B078DA5728DAA7200074138C /* SignInViewController.swift */,
 			);
 			path = SignInSceneFlow;
 			sourceTree = "<group>";
@@ -686,7 +686,7 @@
 				B078DA5C28DAAB210074138C /* SignUpViewModel.swift in Sources */,
 				B09C14F728C90D8B00DFF709 /* UserUseCases.swift in Sources */,
 				B09C151728D7A0DF00DFF709 /* CoreDataUserPersistentStorage.swift in Sources */,
-				B078DA5828DAA7200074138C /* SigninViewController.swift in Sources */,
+				B078DA5828DAA7200074138C /* SignInViewController.swift in Sources */,
 				B09C14FB28D2F6FD00DFF709 /* DataTransferService.swift in Sources */,
 				B0EA18F928D89EF400CE2C15 /* NetworkSession.swift in Sources */,
 				B0EA190128D918C700CE2C15 /* TickerDTO.swift in Sources */,

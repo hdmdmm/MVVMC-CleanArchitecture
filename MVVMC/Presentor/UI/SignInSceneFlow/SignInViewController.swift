@@ -1,5 +1,5 @@
 //
-//  SigninViewController.swift
+//  SignInViewController.swift
 //  MVVMC
 //
 //  Created by Dmitry Kh on 21.09.22.
@@ -9,13 +9,13 @@ import Combine
 import SwiftUI
 
 class SignInViewController: UIViewController {
-  @ObservedObject private(set) var viewModel: MainViewModel
+  @ObservedObject private(set) var viewModel: SignInViewModel
   private(set) var navigationCoordinator: NavigationCoordinator
 
   private var cancellables: Set<AnyCancellable> = []
   
   init(
-    _ viewModel: MainViewModel,
+    _ viewModel: SignInViewModel,
     _ coordinator: NavigationCoordinator
   ) {
     self.viewModel = viewModel
