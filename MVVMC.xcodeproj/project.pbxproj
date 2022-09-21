@@ -317,7 +317,6 @@
 			children = (
 				B008A88528BF8D660036F1EF /* Common */,
 				B008A88228BF71FC0036F1EF /* UI */,
-				B008A87E28BF71280036F1EF /* Utils */,
 			);
 			path = Presentor;
 			sourceTree = "<group>";
@@ -418,6 +417,7 @@
 		B09C150428D6016A00DFF709 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B008A87E28BF71280036F1EF /* Utils */,
 				B09C150528D6018C00DFF709 /* ConfiguratorProtocol.swift */,
 			);
 			path = Common;
