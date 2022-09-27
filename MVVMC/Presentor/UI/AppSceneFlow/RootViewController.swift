@@ -10,7 +10,7 @@ import SwiftUI
 
 class RootViewController: UIViewController {
   @ObservedObject private(set) var viewModel: RootViewModel
-  private(set) var navigationCoordinator: NavigationCoordinator
+  private(set) var navigationCoordinator: NavigationCoordinatorProtocol
 
   private var cancellables: Set<AnyCancellable> = []
 
@@ -24,7 +24,7 @@ class RootViewController: UIViewController {
 
   init(
     _ viewModel: RootViewModel,
-    _ coordinator: NavigationCoordinator
+    _ coordinator: NavigationCoordinatorProtocol
   ) {
     self.viewModel = viewModel
     self.navigationCoordinator = coordinator
@@ -53,9 +53,9 @@ class RootViewController: UIViewController {
       }
       .store(in: &cancellables)
     
-    viewModel.$navigateTo
-      .sink {[navigationCoordinator] navigationType in
-        navigationCoordinator.next(arg: navigationType)
+    viewModel.$router
+      .sink {[navigationCoordinator] router in
+        navigationCoordinator.next(arg: router as? RouterProtocol)
       }
       .store(in: &cancellables)
   }

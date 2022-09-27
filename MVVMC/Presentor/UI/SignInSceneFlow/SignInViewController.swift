@@ -10,13 +10,13 @@ import SwiftUI
 
 class SignInViewController: UIViewController {
   @ObservedObject private(set) var viewModel: SignInViewModel
-  private(set) var navigationCoordinator: NavigationCoordinator
+  private(set) var navigationCoordinator: NavigationCoordinatorProtocol
 
   private var cancellables: Set<AnyCancellable> = []
   
   init(
     _ viewModel: SignInViewModel,
-    _ coordinator: NavigationCoordinator
+    _ coordinator: NavigationCoordinatorProtocol
   ) {
     self.viewModel = viewModel
     self.navigationCoordinator = coordinator

@@ -8,16 +8,40 @@
 import Foundation
 import UIKit
 
-protocol NavigationCoordinator {
-  func next(arg: Any)
-  func start()
-}
-
-protocol NavigationType {
+protocol RouterProtocol {
   func navigate(rootViewController: UINavigationController?, container: DIDepenciesProtocol)
 }
 
-enum AppNavigationTypes: NavigationType {
+protocol NavigationCoordinatorProtocol {
+  var rootViewController: UINavigationController? {get set}
+  var container: DIDepenciesProtocol { get }
+
+  func next(arg: RouterProtocol?)
+  func start()
+}
+
+final class NavigationCoordinator<R: RouterProtocol, C: DIDepenciesProtocol>: NavigationCoordinatorProtocol {
+  // important: weak referenced here due to strong referenced in UI hierarchy
+  weak var rootViewController: UINavigationController?
+  private(set) var container: DIDepenciesProtocol
+
+  init( container: DIDepenciesProtocol ) {
+    self.container = container
+  }
+
+  func next(arg: RouterProtocol?) {
+    guard let router = arg as? R else {
+      // to log the navigation error to UI logger
+      return
+    }
+    router.navigate(rootViewController: rootViewController, container: container)
+  }
+
+  func start() {}
+}
+
+
+enum AppRouter: RouterProtocol {
   case mainSceneFlow, signInSceneFlow, signUpSceneFlow
   
   func navigate(rootViewController: UINavigationController?, container: DIDepenciesProtocol) {
@@ -35,41 +59,16 @@ enum AppNavigationTypes: NavigationType {
       viewController = navigateToSignInSceneFlow(dependencies.makeSignInSceneFlowDIContainer())
     }
     
-    rootViewController?.present(viewController, animated: true)
+    rootViewController?.show(viewController, sender: self)
   }
 
-  private func navigateToSignInSceneFlow(_ container: SignInSceneDIContainer) -> UIViewController  {
+  private func navigateToSignInSceneFlow(_ container: DIDepenciesProtocol) -> UIViewController  {
     container.rootViewController()
   }
-  private func navigateToSignUpSceneFlow(_ container: SignUpSceneDIContainer) -> UIViewController  {
+  private func navigateToSignUpSceneFlow(_ container: DIDepenciesProtocol) -> UIViewController  {
     container.rootViewController()
   }
-  private func navigateToMainSceneFlow(_ container: MainSceneDIContainer) -> UIViewController {
+  private func navigateToMainSceneFlow(_ container: DIDepenciesProtocol) -> UIViewController {
     container.rootViewController()
-  }
-}
-
-final class AppCoordinator {
-  // important: weak referenced here due to strong referenced in UI hierarchy
-  weak var rootViewController: UINavigationController?
-  private let container: AppDIContainer
-
-  init ( container: AppDIContainer ) {
-    self.container = container
-  }
-}
-
-extension AppCoordinator: NavigationCoordinator {
-  func next(arg: Any) {
-    guard let navigation = arg as? AppNavigationTypes else {
-      // put the navigation error to logger
-      return
-    }
-
-    navigation.navigate(rootViewController: rootViewController, container: container)
-  }
-
-  func start() {
-    // while on top level here is nothing to add
   }
 }

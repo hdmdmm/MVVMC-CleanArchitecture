@@ -5,19 +5,18 @@
 //  Created by Dmitry Kh on 20.09.22.
 //
 
-import UIKit
 import Combine
 import SwiftUI
 
 class MainViewController: UIViewController {
   @ObservedObject private(set) var viewModel: MainViewModel
-  private(set) var navigationCoordinator: NavigationCoordinator
+  private(set) var navigationCoordinator: NavigationCoordinatorProtocol
 
   private var cancellables: Set<AnyCancellable> = []
   
   init(
     _ viewModel: MainViewModel,
-    _ coordinator: NavigationCoordinator
+    _ coordinator: NavigationCoordinatorProtocol
   ) {
     self.viewModel = viewModel
     self.navigationCoordinator = coordinator

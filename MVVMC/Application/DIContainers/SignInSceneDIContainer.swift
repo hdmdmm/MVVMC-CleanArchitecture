@@ -11,20 +11,21 @@ import UIKit
 protocol SignInSceneDependencies: DIDepenciesProtocol {
 }
 
-final class SignInSceneDIContainer: SignInSceneDependencies {
+final class SignInSceneDIContainer: SignInSceneDependencies {  
+
   private func makeViewModel() -> SignInViewModel {
     SignInViewModel()
   }
-  
-  private func makeCoordinator() -> SignInSceneCoordinator {
-    SignInSceneCoordinator(container: self)
+
+  private func makeCoordinator() -> NavigationCoordinatorProtocol {
+    NavigationCoordinator<SignInFlowRouter, SignInSceneDIContainer> (container: self)
   }
-  
+
   private func makeViewController() -> SignInViewController {
     SignInViewController( makeViewModel(), makeCoordinator() )
   }
 
-  func rootViewController() -> UINavigationController {
+  func rootViewController() -> UIViewController {
     UINavigationController(rootViewController: makeViewController() )
   }
 }

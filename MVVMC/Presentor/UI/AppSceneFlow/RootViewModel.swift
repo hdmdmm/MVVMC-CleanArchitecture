@@ -25,7 +25,7 @@ enum DataReadyStatus {
 
 final class RootViewModel: ObservableObject {
   @Published private(set) var status: DataReadyStatus
-  @Published private(set) var navigateTo: Any
+  @Published private(set) var router: Any
   
   private let dependencies: RootViewModelDependencies
   
@@ -34,14 +34,14 @@ final class RootViewModel: ObservableObject {
   init(_ dependencies: RootViewModelDependencies) {
     status = .prepearing
     self.dependencies = dependencies
-    navigateTo = Empty<Any, Never>().eraseToAnyPublisher()
+    router = Empty<Any, Never>().eraseToAnyPublisher()
   }
   
   func update() {
     status = .loading
 
     authenticationPublisher
-      .assign(to: \.navigateTo, on: self)
+      .assign(to: \.router, on: self)
       .store(in: &cancellables)
 
     authenticationPublisher

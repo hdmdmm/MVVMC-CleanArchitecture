@@ -8,16 +8,27 @@
 import Foundation
 import UIKit
 
-protocol DIDepenciesProtocol{}
+protocol DIDepenciesProtocol{
+  func rootViewController() -> UIViewController
+}
 
 protocol AppDIDependencies: DIDepenciesProtocol {
-  func makeMainSceneFlowDIContainer() -> MainSceneDIContainer
-  func makeSignInSceneFlowDIContainer() -> SignInSceneDIContainer
-  func makeSignUpSceneFlowDIContainer() -> SignUpSceneDIContainer
+  func makeMainSceneFlowDIContainer() -> DIDepenciesProtocol
+  func makeSignInSceneFlowDIContainer() -> DIDepenciesProtocol
+  func makeSignUpSceneFlowDIContainer() -> DIDepenciesProtocol
 }
 
 final class AppDIContainer {
   let config: AppConfigurator
+  
+  init(config: AppConfigurator) {
+    self.config = config
+  }
+
+  
+  private func makeAuthDataTransferService() -> DataTransferServiceProtocol {
+    return AuthDataTransferService(networkService: networkService)
+  }
   
   lazy var authorizationService: AuthorizationServiceProtocol = {
     AuthorizationService(
@@ -25,33 +36,6 @@ final class AppDIContainer {
       securityQueries: SecurityQueriesDependencies()
     )
   }()
-
-  lazy var coordinator: AppCoordinator = {
-    AppCoordinator(container: self)
-  }()
-
-  init(config: AppConfigurator) {
-    self.config = config
-  }
-
-  func makeRootViewController() -> UINavigationController {
-    UINavigationController(rootViewController: makeMainViewController())
-  }
-
-  private func makeMainViewController() -> UIViewController {
-    RootViewController(makeMainViewModel(), coordinator)
-  }
-
-  private func makeMainViewModel() -> RootViewModel {
-    let dependencies = RootViewModelDependencies(
-      authorizationService: authorizationService,
-      userInteractorUseCases: makeUserUseCases(),
-      navigateToSignInSceneFlow: AppNavigationTypes.signInSceneFlow,
-      navigateToSignUpSceneFlow: AppNavigationTypes.signUpSceneFlow,
-      navigateToMainSceneFlow: AppNavigationTypes.mainSceneFlow
-    )
-    return RootViewModel(dependencies)
-  }
   
   private lazy var networkService: NetworkServiceProtocol = {
     let networkConfig = ApiDataNetworkConfig (
@@ -73,21 +57,40 @@ final class AppDIContainer {
     UserUseCases(repository: makeUserRepository())
   }
 
-  private func makeAuthDataTransferService() -> DataTransferServiceProtocol {
-    return AuthDataTransferService(networkService: networkService)
+  func makeCoordinator() -> NavigationCoordinatorProtocol {
+    NavigationCoordinator<AppRouter, AppDIContainer>(container: self)
+  }
+
+  private func makeMainViewModel() -> RootViewModel {
+    let dependencies = RootViewModelDependencies(
+      authorizationService: authorizationService,
+      userInteractorUseCases: makeUserUseCases(),
+      navigateToSignInSceneFlow: AppRouter.signInSceneFlow,
+      navigateToSignUpSceneFlow: AppRouter.signUpSceneFlow,
+      navigateToMainSceneFlow: AppRouter.mainSceneFlow
+    )
+    return RootViewModel(dependencies)
+  }
+
+  private func makeMainViewController() -> UIViewController {
+    RootViewController(makeMainViewModel(), makeCoordinator())
+  }
+  
+  func rootViewController() -> UIViewController {
+    UINavigationController(rootViewController: makeMainViewController())
   }
 }
 
 extension AppDIContainer: AppDIDependencies {
-  func makeMainSceneFlowDIContainer() -> MainSceneDIContainer {
+  func makeMainSceneFlowDIContainer() -> DIDepenciesProtocol {
     MainSceneDIContainer()
   }
   
-  func makeSignInSceneFlowDIContainer() -> SignInSceneDIContainer {
+  func makeSignInSceneFlowDIContainer() -> DIDepenciesProtocol {
     SignInSceneDIContainer()
   }
   
-  func makeSignUpSceneFlowDIContainer() -> SignUpSceneDIContainer {
+  func makeSignUpSceneFlowDIContainer() -> DIDepenciesProtocol {
     SignUpSceneDIContainer()
   }
 }

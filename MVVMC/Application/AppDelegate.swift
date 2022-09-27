@@ -34,13 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     container = AppDIContainer(config: config)
 
     // root view controller
-    let navigationController = container.makeRootViewController()
+    let navigationController = container.rootViewController()
 
     // Initialize Window and UI
     createWindow(with: navigationController)
-
-    // Root coordinator initialization
-    startRootCoordinator(on: navigationController)
 
     return true
   }
@@ -54,11 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = rootViewController
     window?.makeKeyAndVisible()
-  }
-  
-  private func startRootCoordinator(on rootController: UINavigationController) {
-    container.coordinator.rootViewController = rootController
-    container.coordinator.start()
   }
 }
 

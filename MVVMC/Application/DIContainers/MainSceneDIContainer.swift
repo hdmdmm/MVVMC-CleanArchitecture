@@ -17,15 +17,15 @@ final class MainSceneDIContainer: MainSceneDependencies {
     MainViewModel()
   }
   
-  private func makeCoordinator() -> MainSceneCoordinator {
-    MainSceneCoordinator(container: self)
+  private func makeCoordinator() -> NavigationCoordinatorProtocol {
+    NavigationCoordinator<MainFlowRouter, MainSceneDIContainer>(container: self)
   }
   
   private func makeViewController() -> MainViewController {
     MainViewController( makeViewModel(), makeCoordinator() )
   }
 
-  func rootViewController() -> UINavigationController {
+  func rootViewController() -> UIViewController {
     UINavigationController(rootViewController: makeViewController() )
   }
 }
