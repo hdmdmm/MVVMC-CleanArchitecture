@@ -20,11 +20,14 @@ final class SignUpSceneDIContainer: SignUpSceneDependencies {
     NavigationCoordinator<SignUpFlowRouter, SignUpSceneDIContainer>(container: self)
   }
   
-  private func makeViewController() -> SignUpViewController {
-    SignUpViewController( makeViewModel(), makeCoordinator() )
+  private func makeViewController(_ coordinator: NavigationCoordinatorProtocol) -> SignUpViewController {
+    SignUpViewController( makeViewModel(), coordinator )
   }
 
   func rootViewController() -> UIViewController {
-    UINavigationController(rootViewController: makeViewController() )
+    var coordinator = makeCoordinator()
+    let rootViewController = UINavigationController(rootViewController: makeViewController(coordinator) )
+    coordinator.rootViewController = rootViewController
+    return rootViewController
   }
 }

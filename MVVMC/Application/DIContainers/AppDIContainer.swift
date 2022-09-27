@@ -72,12 +72,15 @@ final class AppDIContainer {
     return RootViewModel(dependencies)
   }
 
-  private func makeMainViewController() -> UIViewController {
-    RootViewController(makeMainViewModel(), makeCoordinator())
+  private func makeMainViewController(_ coordinator: NavigationCoordinatorProtocol) -> UIViewController {
+    RootViewController(makeMainViewModel(), coordinator)
   }
   
   func rootViewController() -> UIViewController {
-    UINavigationController(rootViewController: makeMainViewController())
+    var coordinator = makeCoordinator()
+    let rootViewConroller = UINavigationController(rootViewController: makeMainViewController(coordinator))
+    coordinator.rootViewController = rootViewConroller
+    return rootViewConroller
   }
 }
 

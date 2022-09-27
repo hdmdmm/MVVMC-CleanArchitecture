@@ -21,11 +21,12 @@ final class MainSceneDIContainer: MainSceneDependencies {
     NavigationCoordinator<MainFlowRouter, MainSceneDIContainer>(container: self)
   }
   
-  private func makeViewController() -> MainViewController {
-    MainViewController( makeViewModel(), makeCoordinator() )
+  private func makeViewController(_ coordinator: NavigationCoordinatorProtocol) -> MainViewController {
+    MainViewController( makeViewModel(), coordinator )
   }
 
   func rootViewController() -> UIViewController {
-    UINavigationController(rootViewController: makeViewController() )
+    var coordinator = makeCoordinator()
+    UINavigationController(rootViewController: makeViewController(coordinator) )
   }
 }
