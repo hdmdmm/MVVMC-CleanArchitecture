@@ -27,6 +27,8 @@ final class MainSceneDIContainer: MainSceneDependencies {
 
   func rootViewController() -> UIViewController {
     var coordinator = makeCoordinator()
-    UINavigationController(rootViewController: makeViewController(coordinator) )
+    let rootViewController = UINavigationController(rootViewController: makeViewController(coordinator) )
+    coordinator.rootViewController = rootViewController
+    return rootViewController
   }
 }
