@@ -8,22 +8,32 @@
 import Foundation
 
 struct UserProfileEntity: Codable, Equatable {
-  let userId: UUID
   let name: String
   let lastName: String
   let username: String
-  
+
+  var hasher: Hasher {
+    var hasher = Hasher()
+    hasher.combine(username + name + lastName)
+    return hasher
+  }
+
   static func == (lhs: Self, rhs: Self) -> Bool {
-    return lhs.userId.hashValue == rhs.userId.hashValue
+    return lhs.hasher.finalize() == rhs.hasher.finalize()
   }
 }
 
 struct UserCredentialEntity: Equatable {
-  let userId: UUID
   let username: String
   let password: String
+  
+  var hasher: Hasher {
+    var hasher = Hasher()
+    hasher.combine(username + password)
+    return hasher
+  }
 
   static func == (lhs: Self, rhs: Self) -> Bool {
-    return lhs.userId.hashValue == rhs.userId.hashValue
+    return lhs.hasher.finalize() == rhs.hasher.finalize()
   }
 }

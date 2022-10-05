@@ -7,30 +7,29 @@
 
 import Foundation
 
-struct AddressDTO: Decodable {
-
-  private enum CodingKeys: String, CodingKey {
-    case address, city, state
-    case postalCode = "postal_code"
-  }
-
-  let address: String
-  let city: String
-  let postalCode: String
-  let state: String
-}
-
-struct BrandingDTO: Decodable {
-  private enum CodingKeys: String, CodingKey {
-    case iconUrl = "icon_url"
-    case logoUrl = "logo_url"
-  }
-
-  let iconUrl: String?
-  let logoUrl: String?
-}
-
 struct TickerDTO: Decodable {
+  struct AddressDTO: Decodable {
+
+    private enum CodingKeys: String, CodingKey {
+      case address, city, state
+      case postalCode = "postal_code"
+    }
+
+    let address: String
+    let city: String
+    let postalCode: String
+    let state: String
+  }
+
+  struct BrandingDTO: Decodable {
+    private enum CodingKeys: String, CodingKey {
+      case iconUrl = "icon_url"
+      case logoUrl = "logo_url"
+    }
+
+    let iconUrl: String?
+    let logoUrl: String?
+  }
 
   private enum CodingKeys: String, CodingKey {
     case ticker, name, market, locale, type, active, cik, address, branding, description
@@ -98,4 +97,24 @@ struct SearchTickerDTO: Decodable {
   let currencyName: String
   let cik: String
   let lastUpdatedUTC: String
+}
+
+// MARK: - Mappings to Domain
+
+extension SearchTickerDTO {
+  func toDomain() -> Ticker {
+    return .init()
+  }
+}
+
+extension TickerDTO {
+  func toDomain() -> Ticker {
+    return .init()
+  }
+}
+
+extension TickerDTO.AddressDTO {
+}
+
+extension TickerDTO.BrandingDTO {
 }

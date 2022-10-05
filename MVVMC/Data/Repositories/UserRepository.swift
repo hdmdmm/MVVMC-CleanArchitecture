@@ -22,7 +22,6 @@ final class UserRepository: UserRepositoryProtocol {
 
   func fetchCurrentUser() -> AnyPublisher<UserProfileEntity, Error> {
     return Just( UserProfileEntity(
-      userId: UUID(),
       name: "Ilon",
       lastName: "Mask",
       username: "imaskinnovations"
