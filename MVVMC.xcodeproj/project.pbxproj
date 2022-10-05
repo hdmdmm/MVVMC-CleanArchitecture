@@ -55,6 +55,7 @@
 		B09C151928D7B72800DFF709 /* SignUpSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C151828D7B72800DFF709 /* SignUpSceneDIContainer.swift */; };
 		B09C151B28D7B75B00DFF709 /* SignInSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C151A28D7B75B00DFF709 /* SignInSceneDIContainer.swift */; };
 		B09C151D28D7B77200DFF709 /* MainSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C151C28D7B77200DFF709 /* MainSceneDIContainer.swift */; };
+		B0A4CCC128E365E600BB79E6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A4CCC028E365E600BB79E6 /* DetailViewController.swift */; };
 		B0EA18F928D89EF400CE2C15 /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EA18F828D89EF400CE2C15 /* NetworkSession.swift */; };
 		B0EA18FB28D8EB3000CE2C15 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EA18FA28D8EB3000CE2C15 /* NetworkConfig.swift */; };
 		B0EA18FF28D9180E00CE2C15 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EA18FE28D9180E00CE2C15 /* API.swift */; };
@@ -132,6 +133,7 @@
 		B09C151828D7B72800DFF709 /* SignUpSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpSceneDIContainer.swift; sourceTree = "<group>"; };
 		B09C151A28D7B75B00DFF709 /* SignInSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSceneDIContainer.swift; sourceTree = "<group>"; };
 		B09C151C28D7B77200DFF709 /* MainSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneDIContainer.swift; sourceTree = "<group>"; };
+		B0A4CCC028E365E600BB79E6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		B0EA18F828D89EF400CE2C15 /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		B0EA18FA28D8EB3000CE2C15 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
 		B0EA18FE28D9180E00CE2C15 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				B04E2A1E28BE4F3A006E8969 /* MVVMC */,
+				B09C150428D6016A00DFF709 /* Common */,
 				B04E2A3828BE4F3D006E8969 /* MVVMCTests */,
 				B04E2A4228BE4F3D006E8969 /* MVVMCUITests */,
 				B04E2A1D28BE4F3A006E8969 /* Products */,
@@ -248,13 +251,12 @@
 		B04E2A1E28BE4F3A006E8969 /* MVVMC */ = {
 			isa = PBXGroup;
 			children = (
-				B09C150428D6016A00DFF709 /* Common */,
 				B04E2A5228BE4F43006E8969 /* Application */,
-				B04E2A5728BE517B006E8969 /* Presentor */,
 				B04E2A5828BE51A0006E8969 /* Domain */,
-				B09C14E628C76DF500DFF709 /* Authorization */,
+				B04E2A5728BE517B006E8969 /* Presentor */,
 				B04E2A5628BE5154006E8969 /* Data */,
 				B008A87928BF69A40036F1EF /* Infrastructure */,
+				B09C14E628C76DF500DFF709 /* Authorization */,
 				B04E2A5328BE4FA2006E8969 /* Resources */,
 			);
 			path = MVVMC;
@@ -485,6 +487,7 @@
 				B078DA5128DA26B50074138C /* MainSceneCoordinator.swift */,
 				B078DA4D28DA22680074138C /* MainViewModel.swift */,
 				B078DA4F28DA22760074138C /* MainViewController.swift */,
+				B0A4CCC028E365E600BB79E6 /* DetailViewController.swift */,
 			);
 			path = MainSceneFlow;
 			sourceTree = "<group>";
@@ -659,6 +662,7 @@
 				B078DA5628DAA6FA0074138C /* SignInViewModel.swift in Sources */,
 				B04E2A2428BE4F3A006E8969 /* RootViewController.swift in Sources */,
 				B09C14FF28D5EDC300DFF709 /* NetworkService.swift in Sources */,
+				B0A4CCC128E365E600BB79E6 /* DetailViewController.swift in Sources */,
 				B04E2A5E28BE51F5006E8969 /* CoreDataStorage.swift in Sources */,
 				B09C150628D6018C00DFF709 /* ConfiguratorProtocol.swift in Sources */,
 				B09C14FD28D36CFB00DFF709 /* EncryptedStorage.swift in Sources */,
